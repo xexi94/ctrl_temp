@@ -16,8 +16,6 @@ class SampleApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         
-        
-        
         tk.Tk.__init__(self, *args, **kwargs)    
         
         self.title("ProgramName")
@@ -57,34 +55,34 @@ class MainPage(tk.Frame):
     
        
     def __init__(self, parent, controller):
-            
-        tk.Frame.__init__(self, parent)
-        self.controller = controller
-        label = tk.Label(self, text="This is the main page")#, font=controller.title_font
-        label.pack(side="top", fill="x", pady=10)
-        global running
-        
-        running = False
         
         #DEVICE SELECTION
-        optionList=["     "]
-            
-        if os.name == 'nt':
-            None
+        def dev_select():
+            global optionList
+            optionList=["     "]
+                
+            if os.name == 'nt':
+                None
+                        
+            elif os.name == 'posix': 
+                lines = os.popen("dmesg | grep tty").readlines()
+                for i in lines:
+                    aux = i[i.find('tty')::]
+                    device = aux[0:(aux.find(" "))-1]
+                    statment = str((os.popen("test -e /dev/"+device+" && echo True || echo False").readlines()))
+                    if (statment[2:-4] == "True"):
+                        
+                        optionList.append(device)
+                    else:
+                        optionList.append("     ")
                     
-        elif os.name == 'posix': 
-            lines = os.popen("dmesg | grep tty").readlines()
-            for i in lines:
-                aux = i[i.find('tty')::]
-                device = aux[0:(aux.find(" "))-1]
-                if (bool(os.popen("test -e /dev/"+device+" && echo True || echo False").readlines()) == True):
-                    optionList.append(device)
-                else:
-                    optionList.append("     ")
-            optionList = sorted(list(set(optionList)))        
-        
+                optionList = sorted(list(set(optionList)))
+            
+            return (optionList)    
+          
         #DATA ACQUISITION
         def scanning():
+            
             if running:
                 try:
                     data = ser.readline()
@@ -97,7 +95,6 @@ class MainPage(tk.Frame):
                 print("NaN")
             self.after(500, scanning)   
                     
-            
         def start():
             global running
             global ser
@@ -114,9 +111,7 @@ class MainPage(tk.Frame):
                 path = dir_path+"/tempfiles"
                     
                 f = open(path+"/temp01.txt","w")
-                
-
-
+        
         def stop():
             global running
             global ser
@@ -129,8 +124,6 @@ class MainPage(tk.Frame):
             ser.close()
             popupmsg()
         
-
-
         def popupmsg():
 
             def yes():
@@ -170,10 +163,21 @@ class MainPage(tk.Frame):
             Ys.pack(side=tk.BOTTOM,pady=4)
             Bl.pack(side=tk.BOTTOM,pady=4)
             popup.mainloop()
+                 
+        
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text="This is the main page")#, font=controller.title_font
+        label.pack(side="top", fill="x", pady=10)
+        
+        global running
+        running = False
         
         #BUTTONS
+        dev_select()
         self.option = tk.StringVar(self)
         self.option.set(optionList[0])
+        print(self.option)
         w=tk.OptionMenu(self,self.option,*optionList)
         w.pack(side=tk.LEFT)
         
@@ -182,7 +186,10 @@ class MainPage(tk.Frame):
         button1.pack(side=tk.LEFT)
         button2.pack(side=tk.LEFT)
 
-        self.after(500, scanning)
+        scanning()
+     
+        
+
 
 
 if __name__ == "__main__":
