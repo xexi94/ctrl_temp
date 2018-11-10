@@ -86,8 +86,8 @@ class MainPage(tk.Frame):
                 try:
                     data = ser.readline()
                     if data:
-                        print (str(data))
-                        f.write(str(float(data))+"\n")
+                        print (int(data[:-1]))
+                        f.write(str(int(data[:-1]))+"\n")
                 except (NameError,FileNotFoundError):
                     print("NameError")
             else:
