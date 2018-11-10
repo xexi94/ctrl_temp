@@ -63,18 +63,18 @@ class MainPage(tk.Frame):
         #DEVICE SELECTION
         optionList=["     "]
         if os.name == 'nt':
-        	None
+            None
             
         elif os.name == 'posix':
-        	lines = os.popen("dmesg | grep tty").readlines()
-        	for i in lines:
-        		aux = i[i.find('tty')::]
-        		device = aux[0:(aux.find(" "))-1]
-        		if (bool(os.popen("test -e /dev/"+device+" && echo True || echo False").readlines()) == True):
-        			optionList.append(device)
-        		else:
-        			optionList.append("     ")
-        	optionList = sorted(list(set(optionList)))
+            lines = os.popen("dmesg | grep tty").readlines()
+            for i in lines:
+                aux = i[i.find('tty')::]
+                device = aux[0:(aux.find(" "))-1]
+                if (bool(os.popen("test -e /dev/"+device+" && echo True || echo False").readlines()) == True):
+                    optionList.append(device)
+                else:
+                    optionList.append("     ")
+            optionList = sorted(list(set(optionList)))
         
         self.option = tk.StringVar(self)
         self.option.set(optionList[0])
@@ -170,10 +170,6 @@ class MainPage(tk.Frame):
         button2.pack(side=tk.LEFT)
 
         self.after(500, scanning)
-        #button1 = tk.Button(self, text="Go to Page One",
-         #                   command=lambda: controller.show_frame("PageOne"))
-        #button2 = tk.Button(self, text="Go to Page Two",
-        #                    command=lambda: controller.show_frame("PageTwo"))
 
 
 if __name__ == "__main__":
