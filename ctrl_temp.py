@@ -10,7 +10,7 @@ while True:
     if data:
         print(data)
 '''
-#hello man
+#prova eclipse
 class SampleApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
