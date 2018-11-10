@@ -159,16 +159,16 @@ class MainPage(tk.Frame):
             message=tk.Label(popup,text="description")
             Ys = tk.Button(popup,text="Yes",command=yes)
             Bl = tk.Button(popup,text="No",command=no)
-            message.pack()
-            Ys.pack(side=tk.BOTTOM,pady=4)
-            Bl.pack(side=tk.BOTTOM,pady=4)
+            message.grid()
+            Ys.grid()
+            Bl.grid()
             popup.mainloop()
                  
         
         tk.Frame.__init__(self, parent)
         self.controller = controller
         label = tk.Label(self, text="This is the main page")#, font=controller.title_font
-        label.pack(side="top", fill="x", pady=10)
+        label.grid()
         
         global running
         running = False
@@ -177,14 +177,13 @@ class MainPage(tk.Frame):
         dev_select()
         self.option = tk.StringVar(self)
         self.option.set(optionList[0])
-        print(self.option)
         w=tk.OptionMenu(self,self.option,*optionList)
-        w.pack(side=tk.LEFT)
+        w.grid()
         
         button1 = tk.Button(self, text="Start",command=start)
         button2 = tk.Button(self, text="STOP",command=stop)
-        button1.pack(side=tk.LEFT)
-        button2.pack(side=tk.LEFT)
+        button1.grid()
+        button2.grid()
 
         scanning()
      
