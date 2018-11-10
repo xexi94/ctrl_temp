@@ -16,8 +16,7 @@ class SampleApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         
         global running
-        global ser
-        global f
+        
         running = False
         
         tk.Tk.__init__(self, *args, **kwargs)    
@@ -59,6 +58,7 @@ class MainPage(tk.Frame):
     
        
     def __init__(self, parent, controller):
+            
         tk.Frame.__init__(self, parent)
         self.controller = controller
         label = tk.Label(self, text="This is the main page")#, font=controller.title_font
@@ -68,8 +68,8 @@ class MainPage(tk.Frame):
         optionList=["     "]
         if os.name == 'nt':
             None
-            
-        elif os.name == 'posix':
+                
+        elif os.name == 'posix': 
             lines = os.popen("dmesg | grep tty").readlines()
             for i in lines:
                 aux = i[i.find('tty')::]
@@ -79,14 +79,11 @@ class MainPage(tk.Frame):
                 else:
                     optionList.append("     ")
             optionList = sorted(list(set(optionList)))
-                    
-        self.option = tk.StringVar(self)
-        self.option.set(optionList[0])
-        w=tk.OptionMenu(self,self.option,*optionList)
-        w.pack(side=tk.LEFT)
+                        
         
         #DATA ACQUISITION
         def scanning():
+            
             if running:
                 try:
                     data = ser.readline()
@@ -121,6 +118,8 @@ class MainPage(tk.Frame):
 
         def stop():
             global running
+            global ser
+            global f
             running = False
             try:
                 f.close()
@@ -172,6 +171,11 @@ class MainPage(tk.Frame):
             popup.mainloop()
         
         #BUTTONS
+        self.option = tk.StringVar(self)
+        self.option.set(optionList[0])
+        w=tk.OptionMenu(self,self.option,*optionList)
+        w.pack(side=tk.LEFT)
+        
         button1 = tk.Button(self, text="Start",command=start)
         button2 = tk.Button(self, text="STOP",command=stop)
         button1.pack(side=tk.LEFT)
