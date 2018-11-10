@@ -10,7 +10,7 @@ while True:
     if data:
         print(data)
 '''
-#hello
+#hello man
 class SampleApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
