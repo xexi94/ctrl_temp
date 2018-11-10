@@ -10,6 +10,7 @@ while True:
     if data:
         print(data)
 '''
+#hello
 class SampleApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -142,7 +143,7 @@ class MainPage(tk.Frame):
                 if os.name == 'nt':
                     None
                 elif os.name == 'posix':
-                	dir_path = os.path.dirname(os.path.realpath(__file__))
+                    dir_path = os.path.dirname(os.path.realpath(__file__))
                     os.system("rm "+dir_path+"/tempfiles/temp01.txt")
                     popup.destroy()
 
