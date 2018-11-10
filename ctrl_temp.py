@@ -3,6 +3,7 @@ from tkinter import filedialog
 import serial
 import os
 
+#Basics
 '''
 ser = serial.Serial('/dev/ttyACM0', 9600) # device, BAUD
 while True:
@@ -15,9 +16,7 @@ class SampleApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         
-        global running
         
-        running = False
         
         tk.Tk.__init__(self, *args, **kwargs)    
         
@@ -63,12 +62,16 @@ class MainPage(tk.Frame):
         self.controller = controller
         label = tk.Label(self, text="This is the main page")#, font=controller.title_font
         label.pack(side="top", fill="x", pady=10)
-
+        global running
+        
+        running = False
+        
         #DEVICE SELECTION
         optionList=["     "]
+            
         if os.name == 'nt':
             None
-                
+                    
         elif os.name == 'posix': 
             lines = os.popen("dmesg | grep tty").readlines()
             for i in lines:
@@ -78,12 +81,10 @@ class MainPage(tk.Frame):
                     optionList.append(device)
                 else:
                     optionList.append("     ")
-            optionList = sorted(list(set(optionList)))
-                        
+            optionList = sorted(list(set(optionList)))        
         
         #DATA ACQUISITION
         def scanning():
-            
             if running:
                 try:
                     data = ser.readline()

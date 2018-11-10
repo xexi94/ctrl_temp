@@ -1,5 +1,6 @@
 Bugs:
 -Device changes during process (block)
+-not open exception
 -Windows compatibility
 Improvments:
 -Graph
