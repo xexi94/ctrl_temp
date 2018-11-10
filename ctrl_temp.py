@@ -14,8 +14,12 @@ while True:
 class SampleApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
+        
         global running
+        global ser
+        global f
         running = False
+        
         tk.Tk.__init__(self, *args, **kwargs)    
         
         self.title("ProgramName")
@@ -75,7 +79,7 @@ class MainPage(tk.Frame):
                 else:
                     optionList.append("     ")
             optionList = sorted(list(set(optionList)))
-        
+                    
         self.option = tk.StringVar(self)
         self.option.set(optionList[0])
         w=tk.OptionMenu(self,self.option,*optionList)
@@ -103,13 +107,16 @@ class MainPage(tk.Frame):
             running = True
             if os.name == 'nt':
                     None
-            elif os.name == 'posix': 
+            elif os.name == 'posix':
+                
+            
                 dev=str(self.option.get())
                 dir_path = os.path.dirname(os.path.realpath(__file__))
-                ser = serial.Serial(str('/dev/'+dev), 9600)
+                ser = serial.Serial(str('/dev/'+dev), 9600)                    
                 path = dir_path+"/tempfiles"
-                
+                    
                 f = open(path+"/temp01.txt","w")
+                
 
 
         def stop():
@@ -119,6 +126,7 @@ class MainPage(tk.Frame):
                 f.close()
             except (NameError,FileNotFoundError):
                 print("NameError")
+            ser.close()
             popupmsg()
         
 
