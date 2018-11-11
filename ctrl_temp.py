@@ -1,5 +1,12 @@
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.figure import Figure
+
 import tkinter as tk                # python 3
 from tkinter import filedialog
+from tkinter import ttk
+
 import serial
 import os
 
@@ -11,7 +18,7 @@ while True:
     if data:
         print(data)
 '''
-
+LARGE_FONT = ("Verdana",12)
 class SampleApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -59,29 +66,24 @@ class MainPage(tk.Frame):
         
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        self.parent = parent
-      
-        self.lowerframe = tk.Frame(self.master, width=425, height=275)
-        self.lowerframe.config(background="#336699")
-        self.label = tk.Label(self.lowerframe, text="This is the main page").grid(row=0,column=0)
-        #self.label.grid()
-        self.lowerframe.grid(row=1,column=1)
         
-        #, font=controller.title_font
-        #self.label.grid()
-        #BUTTONS
+        
         self.dev_select()
         
         
         self.option = tk.StringVar(self)
         self.option.set(optionList[0])
-        w=tk.OptionMenu(self,self.option,*optionList)
-        w.grid()
+        w=ttk.OptionMenu(self,self.option,*optionList)
         
-        button1 = tk.Button(self, text="Start",command=self.start)
-        button2 = tk.Button(self, text="STOP",command=self.stop)
-        button1.grid()
-        button2.grid()
+        
+        button1 = ttk.Button(self, text="Start",command=self.start)
+        button2 = ttk.Button(self, text="STOP",command=self.stop)
+        
+        w.place(x=638,y=275,width=110,heigh=30)
+        button1.place(x=638,y=367,width=110,heigh=30)
+        button2.place(x=638,y=458,width=110,heigh=30)
+        
+        
         
         global running
         running = False
@@ -182,7 +184,7 @@ class MainPage(tk.Frame):
         elif os.name == 'posix':
             None
         popup.wm_title("")
-        message=tk.Label(popup,text="description")
+        message=ttk.Label(popup,text="description")
         Ys = tk.Button(popup,text="Yes",command=yes)
         Bl = tk.Button(popup,text="No",command=no)
         message.grid()
