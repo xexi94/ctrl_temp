@@ -59,13 +59,16 @@ class MainPage(tk.Frame):
         
         tk.Frame.__init__(self, parent)
         self.controller = controller
+        self.parent = parent
+      
+        self.lowerframe = tk.Frame(self.master, width=425, height=275)
+        self.lowerframe.config(background="#336699")
+        self.label = tk.Label(self.lowerframe, text="This is the main page").grid(row=0,column=0)
+        #self.label.grid()
+        self.lowerframe.grid(row=1,column=1)
         
-        
-        
-        frame1 = tk.Frame(self,height=2,width=5,bg="red")
-        frame1.grid(row = 0, column = 0, sticky = tk.W)
-        frame1.label = tk.Label(self, text="This is the main page")#, font=controller.title_font
-        frame1.label.grid(row=0, column=0)
+        #, font=controller.title_font
+        #self.label.grid()
         #BUTTONS
         self.dev_select()
         
@@ -84,6 +87,7 @@ class MainPage(tk.Frame):
         running = False
         
         self.scanning()
+    
     def dev_select(self):
         global optionList
         optionList=["     "]
