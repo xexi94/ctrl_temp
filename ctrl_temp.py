@@ -10,14 +10,7 @@ from tkinter import ttk
 import serial
 import os
 
-#Basics
-'''
-ser = serial.Serial('/dev/ttyACM0', 9600) # device, BAUD
-while True:
-    data = ser.readline()
-    if data:
-        print(data)
-'''
+
 LARGE_FONT = ("Verdana",12)
 class SampleApp(tk.Tk):
 
@@ -25,16 +18,7 @@ class SampleApp(tk.Tk):
         
         tk.Tk.__init__(self, *args, **kwargs)    
         
-        self.title("ProgramName")
-        self.variable = "Hellomellow" 
-        self.resizable(0,0)
-
-        if os.name == 'nt':
-            None
-            #self.iconbitmap("Images/thermometer.ico") 
-        elif os.name == 'posix':
-            None
-        self.geometry("850x550") 
+        tk.Tk.title(self, "ProgramName")
 
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -44,17 +28,17 @@ class SampleApp(tk.Tk):
         self.frames = {}
         
         for F in (MainPage,):
-            page_name = F.__name__
-            frame = F(parent=container, controller=self)
-            self.frames[page_name] = frame
+            
+            frame = F(container, self)
+            self.frames[F] = frame
 
             frame.grid(row=0, column=0, sticky="nsew")
         
-        self.show_frame("MainPage")
+        self.show_frame(MainPage)
 
 
-    def show_frame(self, page_name):
-        frame = self.frames[page_name]
+    def show_frame(self, cont):
+        frame = self.frames[cont]
         frame.tkraise()
 
     
@@ -65,7 +49,6 @@ class MainPage(tk.Frame):
         
         
         tk.Frame.__init__(self, parent)
-        self.controller = controller
         
         
         self.dev_select()
@@ -192,6 +175,8 @@ class MainPage(tk.Frame):
         Bl.grid()
         popup.mainloop()
 
-if __name__ == "__main__":
-    app = SampleApp()
-    app.mainloop()
+
+app = SampleApp()
+app.resizable(width=0, height=0)
+app.geometry("850x550")
+app.mainloop()

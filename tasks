@@ -13,3 +13,12 @@ Improvments:
 
 https://recursospython.com/guias-y-manuales/posicionar-elementos-en-tkinter/
 https://pythonprogramming.net/tkinter-popup-message-window/
+
+#Basics
+'''
+ser = serial.Serial('/dev/ttyACM0', 9600) # device, BAUD
+while True:
+    data = ser.readline()
+    if data:
+        print(data)
+'''
