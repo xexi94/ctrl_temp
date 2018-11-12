@@ -12,7 +12,7 @@ from tkinter import ttk
 
 import serial
 import os
-
+#hola
 
 LARGE_FONT = ("Verdana",12)
 NORM_FONT = ("Helvetica", 10)
