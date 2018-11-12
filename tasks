@@ -2,7 +2,9 @@ Bugs:
 -Device changes during process (block)
 -not open exception
 -Windows compatibility
+-Click on save and close windows right after
 Improvments:
+-botonera no util, una vegada s'acaba el proces es borra el grafic i no es pot insepccionar
 -Graph
 -Chrono indicator
 -temp indicator

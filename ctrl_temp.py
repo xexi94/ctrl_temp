@@ -15,6 +15,9 @@ import os
 
 
 LARGE_FONT = ("Verdana",12)
+NORM_FONT = ("Helvetica", 10)
+SMALL_FONT = ("Helvetica", 8)
+CHRONO_FONT = ("Times",42)
 style.use("ggplot")
 
 gr = Figure(figsize=(5,5), dpi=100)
@@ -38,6 +41,8 @@ def animate(i):
 
     a.clear()
     a.set_ylim([0,100])
+    a.set_xlabel("time (s)")
+    a.set_ylabel("temperature (C)")
     a.plot(xList, yList)
     
 
@@ -47,7 +52,7 @@ class SampleApp(tk.Tk):
         
         tk.Tk.__init__(self, *args, **kwargs)    
         
-        tk.Tk.title(self, "ProgramName")
+        tk.Tk.title(self, "ctrl_temp beta 1")
 
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -90,10 +95,15 @@ class MainPage(tk.Frame):
         
         button1 = ttk.Button(self, text="Start",command=self.start)
         button2 = ttk.Button(self, text="STOP",command=self.stop)
-        
-        w.place(x=638,y=275,width=110,heigh=30)
-        button1.place(x=638,y=367,width=110,heigh=30)
-        button2.place(x=638,y=458,width=110,heigh=30)
+        label1 = ttk.Label(self,text="Device slection",font=LARGE_FONT)
+        label2 = tk.Label(self,bg="orange")
+        label3 = tk.Label(self,bg="Blue")
+        label1.place(x=540,y=280)
+        label2.place(x=505,y=10,width=340,heigh=200)
+        #label3.place(x=505,y=270,width=170,heigh=300)
+        w.place(x=700,y=275,width=110,heigh=30)
+        button1.place(x=700,y=367,width=110,heigh=30)
+        button2.place(x=700,y=458,width=110,heigh=30)
         
         canvas = FigureCanvasTkAgg(gr, self)
         canvas.show()
@@ -114,7 +124,7 @@ class MainPage(tk.Frame):
             dir_path = os.path.dirname(os.path.realpath(__file__))
             path = dir_path+"/tempfiles"        
             t = open(path+"/temp01.txt","w")
-        
+        self.chrono_temp(0, 0)
         self.scanning()
     
     def dev_select(self):
@@ -145,15 +155,18 @@ class MainPage(tk.Frame):
                 
                 data = ser.readline()
                 if data:
-                    print (str(time)+","+str(int(data[:-1])))
+                    #print (str(time)+","+str(int(data[:-1])))
                     f.write(str(time)+","+str(int(data[:-1]))+"\n")
                     f.flush()
             except (NameError,FileNotFoundError):
+                
                 print("NameError")
+            self.chrono_temp(time,int(data[:-1]) )
             time = time +0.5
             
         else:
-            print("NaN")
+            pass
+            #print("NaN")
         
         self.after(500, self.scanning)
          
@@ -182,12 +195,13 @@ class MainPage(tk.Frame):
         global time
         running = False
         time = 0
-       
+        
         try:
             f.close()
         except (NameError,FileNotFoundError):
             print("NameError")
         ser.close()
+        
         self.popupmsg()
 
     def popupmsg(self):
@@ -221,22 +235,33 @@ class MainPage(tk.Frame):
                 popup.destroy()
 
         popup = tk.Tk()
+        popup.title("Save file")
         popup.resizable(0,0)
-        popup.geometry("200x100")
+        popup.geometry("300x150")
         if os.name == 'nt':
             None
         elif os.name == 'posix':
             None
         popup.wm_title("")
-        message=ttk.Label(popup,text="description")
-        Ys = tk.Button(popup,text="Yes",command=yes)
-        Bl = tk.Button(popup,text="No",command=no)
-        message.grid()
-        Ys.grid()
-        Bl.grid()
+        message=ttk.Label(popup,text="Do you want to save this file?",font=NORM_FONT)
+        Ys = ttk.Button(popup,text="Yes",command=yes)
+        Bl = ttk.Button(popup,text="No",command=no)
+        message.pack(side=tk.TOP,anchor=tk.CENTER,pady=10)
+        Ys.place(x=95,y=50,width=110,heigh=30)
+        Bl.place(x=95,y=100,width=110,heigh=30)
         popup.mainloop()
-
-
+    
+    def chrono_temp(self,secon,tempera):
+        
+        global chronometer
+        global temperature
+        chronometer = tk.Label(self,text="time: "+str(secon)+" s",font=CHRONO_FONT,bg="orange")
+        temperature = tk.Label(self,text="temp: "+str(tempera)+" C",font=CHRONO_FONT,bg="orange")
+        
+        chronometer.place(x=510,y=30)
+        temperature.place(x=510,y=120)
+        
+        
 app = SampleApp()
 app.resizable(width=0, height=0)
 app.geometry("850x550")
